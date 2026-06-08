@@ -11,7 +11,7 @@ def set_bg_image():
         """
         <style>
         .stApp {
-            background-image: url("https://www.magnific.com/photos/social-media");
+            background-image: url("https://www.magnific.com/free-photo/pile-3d-popular-social-media-logos_1191374.htm#fromView=keyword&page=1&position=5&uuid=3746eb0e-8ebe-4eef-90a7-023948c1627a&query=Social+media");
             background-attachment: fixed;
             background-size: cover;
         }
