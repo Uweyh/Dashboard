@@ -6,7 +6,21 @@ import plotly.express as px
 st.set_page_config(page_title="My First Dashboard", layout="wide")
 
 # Paparkan gambar header
-st.image('SM.png', use_container_width=True)
+def set_bg_image():
+    st.markdown(
+        """
+        <style>
+        .stApp {
+            background-image: url("https://www.magnific.com/photos/social-media");
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+set_bg_image()
 # 2. SIDEBAR - Tempat letak kawalan (Controls)
 st.sidebar.header("⚙️ Dashboard Controls")
 st.sidebar.date_input("Select a date")
