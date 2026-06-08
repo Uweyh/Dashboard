@@ -1,47 +1,69 @@
-import streamlit as st
 import pandas as pd
-#import matplotlib.pyplot as plt
 import plotly.express as px
+import ipywidgets as widgets
+from IPython.display import display, HTML, Audio
+from datetime import datetime
 
-#st.image(r'C:\Users\welcome\Desktop\BSMS1306\streamlit\Header.png')
-st.image('SM.png')
-
-st.date_input("Select a date")
-
-st.title("""Welcome to our Dashboard
-This is my first time using streamlit.""")
-
-#upload data
-#upload_file = st.file_uploader("Please upload here:", type = 'csv')
-
-
-#df = pd.read_csv(r"C:\Users\welcome\Desktop\BSMS1306\streamlit\Tips.csv")
+# Load CSV
 df = pd.read_csv("social_media_sleep_stress_productivity_11000.csv")
-#df = pd.read_csv(upload_file)
 
-#show data
-st.subheader("Raw Data")
-st.write(df)
+# Dashboard Title
+display(HTML(f"""
+<h1>Social Media, Sleep, Stress & Productivity Dashboard</h1>
+<h3>{datetime.now().strftime("%d %B %Y %H:%M")}</h3>
+"""))
 
-#histogram
-st.subheader("Histogram")
-column = st.selectbox("Choose a column",df.columns)
-#fig, ax = plt.subplots(figsize = (10,6))
-#df[column].plot(kind = 'hist', ax =ax)
-#st.pyplot(fig)
-fig = px.histogram(df, x=column)
-fig.update_traces( marker = {"color":"pink", "line":{"color":"black","width":2}})
-st.plotly_chart(fig)
+# KPI
+print("Total Records:", len(df))
+print("Average Productivity Score:", round(df["ProductivityScore"].mean(), 2))
+print("Average Sleep Hours:", round(df["SleepHours"].mean(), 2))
+print("Average Social Media Hours:", round(df["SocialMediaHours"].mean(), 2))
 
-#Scatter chart
-st.subheader("Scatter Chart")
-x_column = st.selectbox("Choose x-axis column",df.columns)
-y_column = st.selectbox("Choose y-axis column",df.columns)
-#fig, ax = plt.subplots(figsize = (10,6))
-#df.plot(kind = 'scatter', x=x_column, y=y_column, ax =ax)
-#st.pyplot(fig)
+# Interactive Graph
+numeric_cols = df.select_dtypes(include="number").columns.tolist()
 
-fig = px.scatter(df, x=x_column, y = y_column,color ='StressLevel' , color_discrete_sequence= ['yellow', 'blue', 'green'])
-st.plotly_chart(fig)
+x_dropdown = widgets.Dropdown(
+    options=numeric_cols,
+    value="SleepHours",
+    description="X Axis"
+)
+
+y_dropdown = widgets.Dropdown(
+    options=numeric_cols,
+    value="ProductivityScore",
+    description="Y Axis"
+)
+
+def update_graph(x_col, y_col):
+    fig = px.scatter(
+        df,
+        x=x_col,
+        y=y_col,
+        color="StressLevel",
+        hover_data=["Platform"],
+        title=f"{y_col} vs {x_col}"
+    )
+    fig.show()
+
+display(widgets.interactive(
+    update_graph,
+    x_col=x_dropdown,
+    y_col=y_dropdown
+))
+
+# Heatmap
+corr = df.select_dtypes(include="number").corr()
+
+fig = px.imshow(
+    corr,
+    text_auto=True,
+    aspect="auto",
+    title="Correlation Heatmap"
+)
+fig.show()
+
+# Optional Music
+# Audio("your_song.mp3", autoplay=False)
+
 
 
