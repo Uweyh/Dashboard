@@ -22,23 +22,6 @@ st.title(" Welcome to my Dashboard")
 st.markdown("This is my first time using Streamlit, enhanced with dynamic analytics.")
 st.write("---")
 
-# 4. TAMBAHAN BONUS: KPI Metrics Section
-st.subheader("📊 Data Highlights (KPIs)")
-if 'total_bill' in df.columns and 'tip' in df.columns:
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric(label="💰 Total Bill ($)", value=f"{df['total_bill'].sum():,.2f}")
-    with col2:
-        st.metric(label="💸 Total Tips ($)", value=f"{df['tip'].sum():,.2f}")
-    with col3:
-        st.metric(label="📈 Avg Bill ($)", value=f"{df['total_bill'].mean():,.2f}")
-    with col4:
-        st.metric(label="👥 Total Records", value=len(df))
-else:
-    st.info("KPIs akan dipaparkan jika ruangan 'total_bill' dan 'tip' wujud.")
-
-st.write("---")
-
 # 5. Papar Data (Guna Expander supaya tak semak)
 with st.expander("👀 View Raw Data Table"):
     st.dataframe(df, use_container_width=True)
